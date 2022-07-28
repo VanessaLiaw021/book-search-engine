@@ -7,7 +7,7 @@ const resolvers = {
 
     //Ability to get books from api/database
     Query: {
-        me: async (parent, args, context) => {
+        me: async (parent, context) => {
 
             //If user data exist, return the user data 
             if (context.user) return await User.findOne({ _id: context.user._id });
