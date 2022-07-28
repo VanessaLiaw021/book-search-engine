@@ -7,7 +7,7 @@ const resolvers = {
 
     //Ability to get books from api/database
     Query: {
-        me: async (parent, context) => {
+        me: async (parent, args, context) => {
 
             //If user data exist, return the user data 
             if (context.user) return await User.findOne({ _id: context.user._id });
@@ -24,7 +24,7 @@ const resolvers = {
         login: async (parent, { email, password }) => {
 
             //Find user's username and password 
-            const user = await User.findOne(email);
+            const user = await User.findOne({ email });
 
             //Display error if user email is incorrect
             if (!user) throw new AuthenticationError("Incorrect Crendtials!");
@@ -57,16 +57,16 @@ const resolvers = {
         },
 
         //Saved Books 
-        saveBook: async (parent, { user, body }) => {
+        saveBook: async (parent, { bookData }, context) => {
             
             //Make sure user is logged in to saved books
-            if(user) {
+            if(context.user) {
 
                 //Saved the book based on the user id 
                 const updatedUser = await User.findOneAndUpdate(
 
-                    { _id: user._id },
-                    { $addToSet: { savedBooks: body }},
+                    { _id: context.user._id },
+                    { $addToSet: { savedBooks: bookData }},
                     { new: true, runValidators: true }
 
                 );
@@ -80,16 +80,16 @@ const resolvers = {
         },
 
         //Remove saved books 
-        removeBook: async (parent, { user, params }) => {
+        removeBook: async (parent, { bookId }, context) => {
 
             //Make sure the user is logged in to delete books
-            if (user) {
+            if (context.user) {
 
                 //Remove the book based on the user id 
                 const updatedUser = await User.findOneAndUpdate(
 
-                    { _id: user._id },
-                    { $pull: { savedBooks: { bookId: params.bookId }}},
+                    { _id: context.user._id },
+                    { $pull: { savedBooks: { bookId }}},
                     { new: true }
                 );
 
