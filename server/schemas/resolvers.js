@@ -1,6 +1,6 @@
 //Import required packages 
 const { User } = require("../models");
-const { AuthenticationError } = require('apollor-server-express');
+const { AuthenticationError } = require('apollo-server-express');
 const { signToken } = require('../utils/auth');
 
 const resolvers = {
