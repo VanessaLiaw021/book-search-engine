@@ -53,19 +53,18 @@ const resolvers = {
 
             //Return token and user 
             return { token, user };
-
         },
 
         //Saved Books 
-        saveBook: async (parent, { user, body }) => {
+        saveBook: async (parent, { body }, context) => {
             
             //Make sure user is logged in to saved books
-            if(user) {
+            if(context.user) {
 
                 //Saved the book based on the user id 
                 const updatedUser = await User.findOneAndUpdate(
 
-                    { _id: user._id },
+                    { _id: context.user._id },
                     { $addToSet: { savedBooks: body }},
                     { new: true, runValidators: true }
 
@@ -80,16 +79,16 @@ const resolvers = {
         },
 
         //Remove saved books 
-        removeBook: async (parent, { user, params }) => {
+        removeBook: async (parent, { bookId}, context) => {
 
             //Make sure the user is logged in to delete books
-            if (user) {
+            if (context.user) {
 
                 //Remove the book based on the user id 
                 const updatedUser = await User.findOneAndUpdate(
 
-                    { _id: user._id },
-                    { $pull: { savedBooks: { bookId: params.bookId }}},
+                    { _id: context.user._id },
+                    { $pull: { savedBooks: { bookId }}},
                     { new: true }
                 );
 
