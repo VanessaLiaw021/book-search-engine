@@ -7,6 +7,7 @@ import Auth from '../utils/auth';
 import { saveBookIds, getSavedBookIds } from '../utils/localStorage';
 
 const SearchBooks = () => {
+  
   //Create state for holding returned google api data
   const [searchedBooks, setSearchedBooks] = useState([]);
 
