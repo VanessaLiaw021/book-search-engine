@@ -80,7 +80,7 @@ const resolvers = {
         },
 
         //Remove saved books 
-        deleteBook: async (parent, { user, params }) => {
+        removeBook: async (parent, { user, params }) => {
 
             //Make sure the user is logged in to delete books
             if (user) {
