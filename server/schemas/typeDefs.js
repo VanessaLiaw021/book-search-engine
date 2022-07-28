@@ -7,13 +7,12 @@ const typeDefs = gql`
         _id: ID
         username: String 
         email: String 
-        password: String
         bookCount: Int
         savedBooks: [Book]
     }
 
     type Book {
-        bookId: ID!
+        bookId: String!
         authors: [String]
         title: String 
         description: String 

@@ -20,6 +20,28 @@ const resolvers = {
     //Ability to do the CRUD operation 
     Mutation: {
 
+        //Login user if exist already 
+        login: async (parent, { email, password }) => {
+
+            //Find user's username and password 
+            const user = await User.findOne(email);
+
+            //Display error if user email is incorrect
+            if (!user) throw new AuthenticationError("Incorrect Crendtials!");
+
+            //Check to see if password matches the inputted password 
+            const correctPw = await user.isCorrectPassword(password);
+
+            //Display error if user password is incorrect 
+            if (!correctPw) throw new AuthenticationError("Incorrect Crendtials!");
+
+            //Sign in token if everything matches 
+            const token = signToken(user);
+
+            //Return token and user 
+            return { token, user };
+        },
+
         //Add new user when they sign up 
         addUser: async (parent, { username, email, password }) => {
 
@@ -32,28 +54,6 @@ const resolvers = {
             //Return token and user 
             return { token, user };
 
-        },
-
-        //Login user if exist already 
-        login: async (parent, { email, password }) => {
-
-            //Find user's username and password 
-            const user = await User.findOne(email);
-
-            //Display error if user email is incorrect
-            if (!user) throw new AuthenticationError("Incorrect Email!");
-
-            //Check to see if password matches the inputted password 
-            const correctPw = await user.isCorrectPassword(password);
-
-            //Display error if user password is incorrect 
-            if (!correctPw) throw new AuthenticationError("Incorrect Password!");
-
-            //Sign in token if everything matches 
-            const token = signToken(user);
-
-            //Return token and user 
-            return { token, user };
         },
 
         //Saved Books 
