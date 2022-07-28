@@ -24,7 +24,7 @@ const resolvers = {
         login: async (parent, { email, password }) => {
 
             //Find user's username and password 
-            const user = await User.findOne({email});
+            const user = await User.findOne(email);
 
             //Display error if user email is incorrect
             if (!user) throw new AuthenticationError("Incorrect Crendtials!");
